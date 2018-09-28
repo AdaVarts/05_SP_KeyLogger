@@ -19,6 +19,8 @@ namespace WindowsFormsApp4
             InitializeComponent();
             Load += Form1_Load;
             FormClosing += Form1_FormClosing;
+            notifyIcon1.Icon = SystemIcons.Application;
+            notifyIcon1.DoubleClick += NotifyIcon1_DoubleClick;
         }
 
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
@@ -370,12 +372,21 @@ namespace WindowsFormsApp4
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            UnHook();
+            
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            WindowState = FormWindowState.Minimized;
+            ShowInTaskbar = false;
             SetHook();
         }
+
+        private void NotifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            UnHook();
+            Close();
+        }
+
         public void SetHook()
         {
             IntPtr hinstance = LoadLibrary("User32");
